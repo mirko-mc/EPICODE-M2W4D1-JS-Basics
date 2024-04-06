@@ -1,20 +1,24 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./assets/css/style.css">
     <title>Ruolo Luogo</title>
-    <link href="./assets/css/style.css" rel="stylesheet" type="text/css" />
 </head>
 
 <body>
-    <form>
-        <input type="text" value="" id="title" name="title" placeholder="Inserisci la professione" />
-        <input type="text" value="" id="location" name="location" placeholder="Inserisci la località" />
-        <button type="button" value="cerca"
-            onclick="lookingFor(document.getElementById('title').value,document.getElementById('location').value)">cerca</button>
-    </form>
+    
+    <div>
+        <form>
+            <input type="text" value="" id="title" name="title" placeholder="Inserisci la professione" />
+            <input type="text" value="" id="location" name="location" placeholder="Inserisci la località" />
+            <button type="button" value="cerca"
+                onclick="lookingFor(document.getElementById('title').value,document.getElementById('location').value)">CERCA</button>
+        </form>
+    </div>
+    
     <script src="./assets/js/script.js"></script>
 </body>
 

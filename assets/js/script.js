@@ -123,56 +123,79 @@ const jobs = [
     },
 ]
 
-// sviluppo
-function lookingFor(one, two) {
-    const title = one.toLowerCase();
-    const location = two.toLowerCase();
+// funzione di ricerca professione e località
+function lookingFor(occupation, location) {
+    removeExistingItems("divButtons");
+    removeExistingItems("divResults");
+    // salvo i dati degli argomenti nelle costanti
+    const OCCUPATION = occupation.toLowerCase();
+    const LOCATION = location.toLowerCase();
+    // dichiaro un array che dovrà contenere i risultati
     let results = [];
-    for (const JOB of jobs) {
-        (JOB.title.toLowerCase().includes(title)) && (JOB.location.toLowerCase().includes(location)) ? results.push({ title: JOB.title, location: JOB.location }) : "";
+    // controllo che l'utente abbia inserito entrambi gli elementi da ricercare altrimenti lo avviso
+    if (OCCUPATION === "" && LOCATION === "") alert("Hai dimenticato di inserire sia la professione che la località da ricercare")
+    else if (LOCATION === "") alert("Hai dimenticato di inserire la località da ricercare")
+    else if (OCCUPATION === "") alert("Hai dimenticato di inserire la professione da ricercare")
+    else {
+        // se ha inserito entambi gli elementi ciclo l'oggetto contenente i dati alla ricerca dei dati inseriti dall'utente e li inserisco in un array di oggetti contenente i risultati
+        for (const JOB of jobs) {
+            (JOB.title.toLowerCase().includes(OCCUPATION)) && (JOB.location.toLowerCase().includes(LOCATION)) ? results.push({ title: JOB.title, location: JOB.location }) : "";
+        }
+        const BODY = document.querySelector("body");
+        // creo un div contente i pulsanti per mostrare i risultati
+        const DIVBUTTONS = document.createElement("div");
+        DIVBUTTONS.className = "divButtons";
+        BODY.appendChild(DIVBUTTONS);
+        // creo un div che dovrà contenere i risultati
+        const DIVRESULTS = document.createElement("div");
+        DIVRESULTS.className = "divResults";
+        BODY.appendChild(DIVRESULTS);
+        // creao un pulsante per consultare i dati come elenco
+        const LISTSTYLE = document.createElement("button");
+        LISTSTYLE.appendChild(document.createTextNode("Mostra come elenco"));
+        LISTSTYLE.className="resultsButton";
+        DIVBUTTONS.appendChild(LISTSTYLE);
+        LISTSTYLE.addEventListener("click", () => { listStyle(DIVRESULTS, results) });
+        // creao un pulsante per consultare i dati come tabella
+        const TABLESTYLE = document.createElement("button");
+        TABLESTYLE.appendChild(document.createTextNode("Mostra come tabella"));
+        TABLESTYLE.className="resultsButton";
+        DIVBUTTONS.appendChild(TABLESTYLE);
+        TABLESTYLE.addEventListener("click", () => { tableStyle(DIVRESULTS, results) });
     }
-
-    const LISTSTYLE = document.createElement("button");
-    LISTSTYLE.appendChild(document.createTextNode("Mostra come elenco"));
-    document.querySelector("body").appendChild(LISTSTYLE);
-    LISTSTYLE.addEventListener("click", () => { listStyle(results) });
-
-    const TABLESTYLE = document.createElement("button");
-    TABLESTYLE.appendChild(document.createTextNode("Mostra come tabella"));
-    document.querySelector("body").appendChild(TABLESTYLE);
-    TABLESTYLE.addEventListener("click", () => { tableStyle(results) });
 }
 
-function listStyle(results) {
-    const EXISTS = [document.querySelector("p"), document.querySelector("ul"), document.querySelector("table")];
-    for (const EXIST of EXISTS) {
-        if (EXIST !== null) EXIST.remove();
+function removeExistingItems(className) {
+    const EXISTS = document.getElementsByClassName(className)
+    for (const EXIST of EXISTS) if (EXIST !== null) {
+            EXIST.remove();
     }
+}
+
+function listStyle(divResults, results) {
+    // removeExistingItems("divResults");
     const P = document.createElement("p");
     const UL = document.createElement("ul");
     P.appendChild(document.createTextNode(`RISULTATI TROVATI : ${results.length}`));
-    document.querySelector('body').appendChild(P);
-    document.querySelector('body').appendChild(UL);
+    divResults.appendChild(P);
+    divResults.appendChild(UL);
     for (const RESULT of results) {
         const LI = document.createElement("li");
         LI.innerHTML = `<span>RUOLO : ${RESULT.title}<br>LOCALITA' : ${RESULT.location}</span>`;
-        document.querySelector("UL").appendChild(LI);
+        document.querySelector("ul").appendChild(LI);
     }
 }
 
-function tableStyle(results) {
-    const EXISTS = [document.querySelector("p"), document.querySelector("ul"), document.querySelector("table")];
-    for (const EXIST of EXISTS) {
-        if (EXIST !== null) EXIST.remove();
-    }
+function tableStyle(divResults, results) {
+    // removeExistingItems("divResults");
     const TABLE = document.createElement("table");
     const TBODY = document.createElement("tbody");
-    document.querySelector('body').appendChild(TABLE);
+    divResults.appendChild(TABLE);
     TABLE.appendChild(TBODY);
     for (const RESULT of results) {
         let TR = document.createElement("tr");
-        TBODY.appendChild(TR);
         let TD = document.createElement("td");
+        TBODY.appendChild(TR);
         TD.innerText = RESULT.title;
         TR.appendChild(TD);
         TD = document.createElement("td");
