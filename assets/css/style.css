@@ -1,10 +1,71 @@
-*{
+* {
     box-sizing: border-box;
     margin: 0;
 }
 
-body{
+header {
+    background-color: black;
+    color: orange;
+    width: 100%;
+    padding: 2% 0;
+    text-align: center;
+    height: 10vh;
+}
+
+main {
     display: flex;
     flex-direction: column;
     align-items: center;
+    background-color: orange;
+    height: 80vh;
+}
+
+form,
+.divButtons {
+    display: flex;
+    align-items: center;
+}
+
+input,
+button {
+    background-color: black;
+    color: orange;
+    margin: 2% 1%;
+    border-radius: 10px;
+    text-align: center;
+}
+
+input {
+    height: 2em;
+}
+
+form button {
+    height: 2em;
+}
+
+.divButtons button {
+    height: 3em;
+}
+
+button:hover {
+    background-color: orange;
+    color: black;
+}
+
+button:focus {
+    box-shadow: inset -2px -2px orange;
+}
+
+p {
+    text-align: center;
+    font-weight: bold;
+}
+
+footer {
+    background-color: black;
+    color: orange;
+    width: 100%;
+    padding: 1% 0;
+    height: 10vh;
+    font-size: large;
 }

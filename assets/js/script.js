@@ -125,60 +125,76 @@ const jobs = [
 
 // funzione di ricerca professione e località
 function lookingFor(occupation, location) {
-    removeExistingItems("divButtons");
-    removeExistingItems("divResults");
-    // salvo i dati degli argomenti nelle costanti
+    removeExistingItems(".divButtons");
+    removeExistingItems(".divResults");
+    // salvo i dati degli argomenti nelle costanti convertendo le stringhe in minuscolo
     const OCCUPATION = occupation.toLowerCase();
     const LOCATION = location.toLowerCase();
     // dichiaro un array che dovrà contenere i risultati
-    let results = [];
-    // controllo che l'utente abbia inserito entrambi gli elementi da ricercare altrimenti lo avviso
+    const RESULTS = [];
+    // controllo che l'utente abbia inserito entrambi gli elementi da ricercare altrimenti lo avviso dove ha sbagliato
     if (OCCUPATION === "" && LOCATION === "") alert("Hai dimenticato di inserire sia la professione che la località da ricercare")
     else if (LOCATION === "") alert("Hai dimenticato di inserire la località da ricercare")
     else if (OCCUPATION === "") alert("Hai dimenticato di inserire la professione da ricercare")
     else {
-        // se ha inserito entambi gli elementi ciclo l'oggetto contenente i dati alla ricerca dei dati inseriti dall'utente e li inserisco in un array di oggetti contenente i risultati
+// dichiaro il contatore che conterà il totale dei risultati trovati
+        let i = 0;
+        // se l'utente ha inserito entambi gli elementi ciclo l'oggetto contenente i dati alla ricerca dei dati inseriti dall'utente e li inserisco in un array di oggetti contenente i risultati
         for (const JOB of jobs) {
-            (JOB.title.toLowerCase().includes(OCCUPATION)) && (JOB.location.toLowerCase().includes(LOCATION)) ? results.push({ title: JOB.title, location: JOB.location }) : "";
+            // codice se nella funzione listStyle avessi usato results.lenght invece del contatore per mostrare il totale dei risultati trovati
+            /*(JOB.title.toLowerCase().includes(OCCUPATION)) && (JOB.location.toLowerCase().includes(LOCATION)) ? RESULTS.push({ title: JOB.title, location: JOB.location }) : "";*/
+            if ((JOB.title.toLowerCase().includes(OCCUPATION)) && (JOB.location.toLowerCase().includes(LOCATION))) {
+                RESULTS.push({ title: JOB.title, location: JOB.location });
+                i++;
+            }
         }
-        const BODY = document.querySelector("body");
+        const MAIN = document.querySelector("main");
         // creo un div contente i pulsanti per mostrare i risultati
         const DIVBUTTONS = document.createElement("div");
         DIVBUTTONS.className = "divButtons";
-        BODY.appendChild(DIVBUTTONS);
-        // creo un div che dovrà contenere i risultati
-        const DIVRESULTS = document.createElement("div");
-        DIVRESULTS.className = "divResults";
-        BODY.appendChild(DIVRESULTS);
-        // creao un pulsante per consultare i dati come elenco
+        MAIN.appendChild(DIVBUTTONS);
+        // creo un pulsante per consultare i dati come elenco e richiamo la funzione per mostrarli
         const LISTSTYLE = document.createElement("button");
         LISTSTYLE.appendChild(document.createTextNode("Mostra come elenco"));
-        LISTSTYLE.className="resultsButton";
+        LISTSTYLE.className = "resultsButton";
         DIVBUTTONS.appendChild(LISTSTYLE);
-        LISTSTYLE.addEventListener("click", () => { listStyle(DIVRESULTS, results) });
-        // creao un pulsante per consultare i dati come tabella
+        LISTSTYLE.addEventListener("click", () => { listStyle(MAIN, RESULTS, i) });
+        // creo un pulsante per consultare i dati come tabella e richiamo la funzione per mostrarli
         const TABLESTYLE = document.createElement("button");
         TABLESTYLE.appendChild(document.createTextNode("Mostra come tabella"));
-        TABLESTYLE.className="resultsButton";
+        TABLESTYLE.className = "resultsButton";
         DIVBUTTONS.appendChild(TABLESTYLE);
-        TABLESTYLE.addEventListener("click", () => { tableStyle(DIVRESULTS, results) });
+        TABLESTYLE.addEventListener("click", () => { tableStyle(MAIN, RESULTS, i) });
     }
 }
 
+// funzione per rimuovere i pulsanti/risultati precedenti. in ingresso prende il nome della classe da eliminare
 function removeExistingItems(className) {
-    const EXISTS = document.getElementsByClassName(className)
-    for (const EXIST of EXISTS) if (EXIST !== null) {
-            EXIST.remove();
-    }
+    const REMOVE = document.querySelector(className);
+    if (REMOVE) REMOVE.remove();
 }
 
-function listStyle(divResults, results) {
-    // removeExistingItems("divResults");
+// funzione per creare un div che dovrà contenere i risultati. in ingresso prende il main a cui appendere il div e ritornerà il div
+function divResults(main) {
+    const DIVRESULTS = document.createElement("div");
+    DIVRESULTS.className = "divResults";
+    main.appendChild(DIVRESULTS);
+    return DIVRESULTS;
+}
+
+// funzione per mostrare i risultati come elenco. in ingresso prende il main, i risultati e il totale dei risultati trovati
+function listStyle(main, results, count) {
+    // se ci sono risultati precedenti, li rimuovo
+    removeExistingItems(".divResults");
+    // creo il div per i risultati
+    const DIVRESULTS = divResults(main);
+    // creo un paragrafo per il totale di risultati trovati e la lista non ordinata
     const P = document.createElement("p");
     const UL = document.createElement("ul");
-    P.appendChild(document.createTextNode(`RISULTATI TROVATI : ${results.length}`));
-    divResults.appendChild(P);
-    divResults.appendChild(UL);
+    P.appendChild(document.createTextNode(`RISULTATI TROVATI : ${/*results.length*/count}`));
+    DIVRESULTS.appendChild(P);
+    DIVRESULTS.appendChild(UL);
+    // ogni risultato che trovo lo aggiungo alla lista
     for (const RESULT of results) {
         const LI = document.createElement("li");
         LI.innerHTML = `<span>RUOLO : ${RESULT.title}<br>LOCALITA' : ${RESULT.location}</span>`;
@@ -186,13 +202,22 @@ function listStyle(divResults, results) {
     }
 }
 
-function tableStyle(divResults, results) {
-    // removeExistingItems("divResults");
+// funzione per mostrare i risultati come tabella. in ingresso prende il main, i risultati e il totale dei risultati trovati
+function tableStyle(main, results, count) {
+    // se ci sono risultati precedenti, li rimuovo
+    removeExistingItems(".divResults");
+    // creo il div per i risultati
+    const DIVRESULTS = divResults(main);
+    const P = document.createElement("p");
+    // creo un paragrafo per il totale di risultati trovati e la tabella
+    P.appendChild(document.createTextNode(`RISULTATI TROVATI : ${/*results.length*/count}`));
+    DIVRESULTS.appendChild(P);
     const TABLE = document.createElement("table");
     const TBODY = document.createElement("tbody");
-    divResults.appendChild(TABLE);
+    DIVRESULTS.appendChild(TABLE);
     TABLE.appendChild(TBODY);
     for (const RESULT of results) {
+        // per ogni risultato trovato creo una riga nella tabella
         let TR = document.createElement("tr");
         let TD = document.createElement("td");
         TBODY.appendChild(TR);
