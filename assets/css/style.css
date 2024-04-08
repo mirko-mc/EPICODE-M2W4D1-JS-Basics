@@ -1,4 +1,7 @@
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap');
+
 * {
+    font-family: "Ubuntu", sans-serif;
     box-sizing: border-box;
     margin: 0;
 }
@@ -26,17 +29,22 @@ form,
     align-items: center;
 }
 
-input,
+input {
+    background-color: black;
+    color: orange;
+    margin: 2% 1%;
+    border-radius: 10px;
+    text-align: center;
+    height: 2em;
+}
+
 button {
     background-color: black;
     color: orange;
     margin: 2% 1%;
     border-radius: 10px;
     text-align: center;
-}
-
-input {
-    height: 2em;
+    transition: all 0.5s linear;
 }
 
 form button {
@@ -55,10 +63,24 @@ button:hover {
 button:focus {
     box-shadow: inset -2px -2px orange;
 }
-
+ 
 p {
     text-align: center;
     font-weight: bold;
+}
+
+table {
+    border: 2px solid black;
+}
+
+thead{
+    background-color: black;
+    color: orange;
+
+}
+
+td{
+    background-color: grey;
 }
 
 footer {

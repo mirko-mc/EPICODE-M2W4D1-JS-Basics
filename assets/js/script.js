@@ -156,13 +156,13 @@ function lookingFor(occupation, location) {
         // creo un pulsante per consultare i dati come elenco e richiamo la funzione per mostrarli
         const LISTSTYLE = document.createElement("button");
         LISTSTYLE.appendChild(document.createTextNode("Mostra come elenco"));
-        LISTSTYLE.className = "resultsButton";
+        LISTSTYLE.className = "resultsButton animate__animated animate__jackInTheBox";
         DIVBUTTONS.appendChild(LISTSTYLE);
         LISTSTYLE.addEventListener("click", () => { listStyle(MAIN, RESULTS, i) });
         // creo un pulsante per consultare i dati come tabella e richiamo la funzione per mostrarli
         const TABLESTYLE = document.createElement("button");
         TABLESTYLE.appendChild(document.createTextNode("Mostra come tabella"));
-        TABLESTYLE.className = "resultsButton";
+        TABLESTYLE.className = "resultsButton animate__animated animate__jackInTheBox";
         DIVBUTTONS.appendChild(TABLESTYLE);
         TABLESTYLE.addEventListener("click", () => { tableStyle(MAIN, RESULTS, i) });
     }
@@ -197,6 +197,7 @@ function listStyle(main, results, count) {
     // ogni risultato che trovo lo aggiungo alla lista
     for (const RESULT of results) {
         const LI = document.createElement("li");
+        LI.className="animate__animated animate__fadeInBottomLeft";
         LI.innerHTML = `<span>RUOLO : ${RESULT.title}<br>LOCALITA' : ${RESULT.location}</span>`;
         document.querySelector("ul").appendChild(LI);
     }
@@ -208,11 +209,30 @@ function tableStyle(main, results, count) {
     removeExistingItems(".divResults");
     // creo il div per i risultati
     const DIVRESULTS = divResults(main);
-    const P = document.createElement("p");
-    // creo un paragrafo per il totale di risultati trovati e la tabella
-    P.appendChild(document.createTextNode(`RISULTATI TROVATI : ${/*results.length*/count}`));
-    DIVRESULTS.appendChild(P);
     const TABLE = document.createElement("table");
+    let THEAD = document.createElement("thead");
+    TABLE.appendChild(THEAD);
+    let TR=document.createElement("tr");
+    let TH =document.createElement("th");
+    TH.colSpan="2";
+    TH.innerText=(`RISULTATI TROVATI : ${/*results.length*/count}`);
+    THEAD.appendChild(TR);
+    TR.appendChild(TH);
+    THEAD.appendChild(TR);
+    THEAD = document.createElement("thead");
+    TR=document.createElement("tr");
+    TH =document.createElement("th");
+    TH.scope="col";
+    TH.innerText=("PROFESSIONE");
+    TR.appendChild(TH);
+    TR=document.createElement("tr");
+    TH =document.createElement("th");
+    TH.scope="col";
+    TH.innerText=("LOCALITA'");
+    TR.appendChild(TH);
+
+    
+    
     const TBODY = document.createElement("tbody");
     DIVRESULTS.appendChild(TABLE);
     TABLE.appendChild(TBODY);
@@ -220,6 +240,7 @@ function tableStyle(main, results, count) {
         // per ogni risultato trovato creo una riga nella tabella
         let TR = document.createElement("tr");
         let TD = document.createElement("td");
+        TR.className="animate__animated animate__fadeInBottomRight";
         TBODY.appendChild(TR);
         TD.innerText = RESULT.title;
         TR.appendChild(TD);
